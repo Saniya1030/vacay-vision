@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Room - VacayVision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bookstyles.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("https://www.azurabermuda.com/wp-content/uploads/2023/02/Ocean-View-Guest-Room-1680x1120.jpg");
+            background-size: cover;   /* Ensures the image covers the entire screen */
+            background-position: center center; /* Ensures the image is centered */
+            background-attachment: fixed; /* Keeps the background fixed during scroll */
+            color: #333;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(137, 6, 242, 0.8);  /* Semi-transparent background */
+            color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);  /* White background with some opacity */
+            border-radius: 12px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2e7d32;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Book Your Room</h1>
+    </header>
+
+    <div class="container">
+        <h2>Reservation Form</h2>
+        <form id="booking-form">
+            <label for="roomNumber">Room Number</label>
+            <input type="number" id="roomNumber" required placeholder="Enter Room Number (e.g., 1)" min="1" />
+
+            <label for="guestName">Guest Name</label>
+            <input type="text" id="guestName" required placeholder="Enter Guest's Full Name" />
+
+            <label for="guestContact">Guest Contact</label>
+            <input type="text" id="guestContact" required placeholder="Enter Guest's Contact Number" />
+
+            <label for="stayDuration">Stay Duration (days)</label>
+            <input type="number" id="stayDuration" required placeholder="Enter Stay Duration (in days)" min="1" />
+
+            <button type="submit">Book Room</button>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html">Back to Main Page</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('booking-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Collecting form data
+            const roomNumber = document.getElementById('roomNumber').value;
+            const guestName = document.getElementById('guestName').value;
+            const guestContact = document.getElementById('guestContact').value;
+            const stayDuration = document.getElementById('stayDuration').value;
+
+            // Creating the booking object
+            const newBooking = {
+                roomNumber: roomNumber,
+                guestName: guestName,
+                guestContact: guestContact,
+                stayDuration: parseInt(stayDuration),  // Convert to integer
+                totalCharges: 0  // Initialize with no charges
+            };
+
+            // Retrieving existing bookings from localStorage
+            let bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+
+            // Checking if the room is already booked
+            const isRoomBooked = bookings.some((booking) => booking.roomNumber === roomNumber);
+            if (isRoomBooked) {
+                alert('Room is already booked. Please choose another room.');
+                return;
+            }
+
+            // Adding the new booking to the bookings array
+            bookings.push(newBooking);
+
+            // Saving the updated bookings list to localStorage
+            localStorage.setItem('bookings', JSON.stringify(bookings));
+
+            // Displaying success message
+            alert('Room booked successfully!');
+
+            // Optionally redirecting to the main page or clearing the form
+            window.location.href = 'index.html'; // Redirect to index page
+        });
+    </script>
+</body>
+</html>
